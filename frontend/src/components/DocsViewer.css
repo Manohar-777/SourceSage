@@ -1,0 +1,316 @@
+/* ================================================================
+   DocsViewer Component Styles
+   ================================================================ */
+
+/* ── Generate Screen ─────────────────────────────────────────────── */
+.docs-generate-screen {
+  margin: 2rem auto;
+  max-width: 520px;
+  padding: 3rem 2rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.docs-generate-icon {
+  font-size: 3.5rem;
+  animation: float 3s ease-in-out infinite;
+}
+
+.docs-generate-screen h3 {
+  font-size: 1.5rem;
+}
+
+.docs-generate-screen p {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.docs-feature-list {
+  list-style: none;
+  text-align: left;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.docs-feature-list li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  padding: 8px 12px;
+  background: var(--bg-tertiary);
+  border-radius: 8px;
+}
+
+.docs-generate-btn {
+  margin-top: 0.5rem;
+  padding: 14px 32px;
+  font-size: 1rem;
+}
+
+/* ── Viewer Layout ───────────────────────────────────────────────── */
+.docs-viewer {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: 1rem;
+  min-height: 600px;
+  padding: 1.5rem 0;
+}
+
+/* ── Sidebar ─────────────────────────────────────────────────────── */
+.docs-sidebar {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  overflow: hidden;
+  border-radius: 14px;
+  align-self: start;
+  position: sticky;
+  top: 80px;
+  max-height: calc(100vh - 120px);
+  overflow-y: auto;
+}
+
+.docs-sidebar-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.sidebar-icon { font-size: 1.1rem; }
+
+.docs-sidebar-header h3 {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.docs-nav-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.83rem;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.15s ease;
+}
+.docs-nav-item:hover {
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+}
+.docs-nav-item.active {
+  background: var(--accent-glow);
+  color: var(--accent-primary);
+  font-weight: 600;
+}
+
+.nav-icon { font-size: 0.95rem; flex-shrink: 0; }
+
+.nav-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.78rem;
+}
+
+.docs-nav-divider {
+  padding: 8px 16px 4px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  border-top: 1px solid var(--border);
+  margin-top: 4px;
+}
+
+.docs-sidebar-footer {
+  padding: 12px;
+  border-top: 1px solid var(--border);
+  margin-top: auto;
+}
+
+.docs-regen-btn {
+  width: 100%;
+  justify-content: center;
+  font-size: 0.82rem;
+  padding: 9px 12px;
+  gap: 6px;
+}
+
+.btn-spinner-sm {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border: 2px solid var(--border);
+  border-top-color: var(--accent-primary);
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+/* ── Content Pane ────────────────────────────────────────────────── */
+.docs-content {
+  border-radius: 14px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-height: 600px;
+}
+
+.docs-content-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.docs-content-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.docs-copy-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text-secondary);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.docs-copy-btn:hover { color: var(--text-primary); border-color: var(--accent-primary); }
+
+.docs-content-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px 22px;
+}
+
+.docs-empty {
+  color: var(--text-muted);
+  font-style: italic;
+  padding: 2rem 0;
+}
+
+/* ── Markdown View ───────────────────────────────────────────────── */
+.md-view {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.md-h1 {
+  font-size: 1.7rem;
+  font-weight: 800;
+  background: var(--gradient-accent);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.md-h2 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--border);
+}
+
+.md-h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--accent-primary);
+  margin-top: 1rem;
+  margin-bottom: 0.35rem;
+}
+
+.md-p {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  margin-bottom: 0.4rem;
+}
+
+.md-li {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  padding: 3px 0 3px 18px;
+  position: relative;
+}
+.md-li::before {
+  content: '▸';
+  position: absolute;
+  left: 0;
+  color: var(--accent-primary);
+  font-size: 0.75rem;
+  top: 5px;
+}
+
+.md-spacer { height: 8px; }
+
+.md-code-block {
+  position: relative;
+  background: var(--code-bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin: 10px 0;
+  font-size: 0.82rem;
+  overflow-x: auto;
+  line-height: 1.65;
+}
+
+.md-code-lang {
+  display: inline-block;
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  background: var(--bg-tertiary);
+  padding: 2px 7px;
+  border-radius: 4px;
+}
+
+/* ── Responsive ──────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .docs-viewer {
+    grid-template-columns: 1fr;
+  }
+  .docs-sidebar {
+    position: static;
+    max-height: 220px;
+  }
+}

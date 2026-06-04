@@ -1,0 +1,289 @@
+/* ================================================================
+   AnalysisProgress Component Styles
+   ================================================================ */
+
+.progress-section {
+  padding: 2rem 0 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  max-width: 800px;
+}
+
+/* ── Progress Card ───────────────────────────────────────────────── */
+.progress-card {
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.progress-header {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.progress-spinner {
+  position: relative;
+  width: 56px;
+  height: 56px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.spinner-ring {
+  position: absolute;
+  inset: 0;
+  border: 3px solid var(--border);
+  border-top-color: var(--accent-primary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.spinner-icon {
+  font-size: 1.4rem;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.progress-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.progress-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.progress-phase {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ── Progress Bar ────────────────────────────────────────────────── */
+.progress-bar-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.progress-bar-track {
+  flex: 1;
+  height: 10px;
+  background: var(--bg-tertiary);
+  border-radius: 100px;
+  overflow: hidden;
+  position: relative;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: var(--gradient-accent);
+  border-radius: 100px;
+  transition: width 0.5s ease;
+  position: relative;
+}
+
+.progress-bar-shimmer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  border-radius: 100px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255,255,255,0.25) 50%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+.progress-percent {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--accent-primary);
+  min-width: 40px;
+  text-align: right;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* ── Counters ────────────────────────────────────────────────────── */
+.progress-counters {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.counter {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.counter-value {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+  animation: countUp 0.3s ease;
+  line-height: 1;
+}
+
+.counter-value.issue-count {
+  color: var(--warning);
+}
+
+.counter-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.counter-divider {
+  width: 1px;
+  height: 40px;
+  background: var(--border);
+}
+
+/* ── Current File ────────────────────────────────────────────────── */
+.current-file {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  background: var(--bg-tertiary);
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  font-size: 0.85rem;
+  overflow: hidden;
+}
+
+.current-file-label {
+  color: var(--text-muted);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.current-file-path {
+  color: var(--accent-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1;
+  min-width: 0;
+  font-size: 0.8rem;
+}
+
+.scan-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--success);
+  flex-shrink: 0;
+  animation: pulse 1s ease-in-out infinite;
+}
+
+/* ── Live Feed ───────────────────────────────────────────────────── */
+.live-feed {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.live-feed-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.live-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--success);
+  animation: pulse 1.5s ease-in-out infinite;
+  display: inline-block;
+}
+
+.live-feed-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-height: 320px;
+  overflow-y: auto;
+}
+
+.live-feed-item {
+  padding: 12px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: all 0.2s ease;
+}
+
+.feed-item-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.feed-file-icon {
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+.feed-file-path {
+  flex: 1;
+  font-size: 0.8rem;
+  color: var(--text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+}
+
+.score-chip {
+  flex-shrink: 0;
+  padding: 3px 10px;
+  border-radius: 100px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.score-chip-good  { background: var(--success-glow);  color: var(--success); }
+.score-chip-warn  { background: var(--warning-glow);  color: var(--warning); }
+.score-chip-bad   { background: var(--error-glow);    color: var(--error);   }
+
+.feed-issue-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.feed-badge {
+  padding: 3px 8px;
+  border-radius: 100px;
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+.badge-critical { background: var(--error-glow);   color: var(--error);   }
+.badge-warning  { background: var(--warning-glow); color: var(--warning); }
+.badge-info     { background: var(--accent-glow);  color: var(--accent-primary); }

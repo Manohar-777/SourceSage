@@ -1,0 +1,299 @@
+/* ================================================================
+   RepoInput Component Styles
+   ================================================================ */
+
+.repo-input-section {
+  margin: 2rem auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 720px;
+}
+
+/* ── Settings Panel ──────────────────────────────────────────────── */
+.settings-panel {
+  padding: 0;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.settings-toggle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 18px;
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+.settings-toggle:hover {
+  color: var(--text-primary);
+}
+
+.settings-icon {
+  font-size: 1.1rem;
+}
+
+.settings-chevron {
+  margin-left: auto;
+  transition: transform 0.3s ease;
+  font-size: 0.8rem;
+}
+.settings-chevron.rotated {
+  transform: rotate(180deg);
+}
+
+.settings-body {
+  padding: 0 18px 18px;
+  animation: fadeInUp 0.3s ease;
+}
+
+.settings-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+
+.label-icon {
+  font-size: 0.9rem;
+}
+
+.api-key-row {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.api-key-input {
+  padding-right: 40px;
+}
+
+.api-key-check {
+  position: absolute;
+  right: 14px;
+  color: var(--success);
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+.settings-hint {
+  margin-top: 8px;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+.settings-hint a {
+  color: var(--accent-primary);
+  font-weight: 500;
+}
+.settings-hint a:hover {
+  text-decoration: underline;
+}
+
+/* ── Main Form ───────────────────────────────────────────────────── */
+.repo-form {
+  padding: 6px;
+  position: relative;
+}
+
+.input-group {
+  display: flex;
+  gap: 0;
+  align-items: stretch;
+}
+
+.input-icon-wrapper {
+  position: relative;
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.input-icon {
+  position: absolute;
+  left: 16px;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.repo-url-input {
+  padding-left: 46px;
+  border-radius: 12px 0 0 12px;
+  border-right: none;
+  font-size: 0.95rem;
+}
+.repo-url-input:focus {
+  border-right: none;
+}
+.repo-url-input.invalid {
+  border-color: var(--error);
+}
+.repo-url-input.invalid:focus {
+  box-shadow: 0 0 0 3px var(--error-glow);
+}
+
+.analyze-btn {
+  border-radius: 0 12px 12px 0;
+  padding: 14px 28px;
+  white-space: nowrap;
+  font-size: 0.95rem;
+  min-width: 140px;
+}
+
+.btn-spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+.btn-icon {
+  font-size: 1rem;
+}
+
+/* ── Input Error ─────────────────────────────────────────────────── */
+.input-error {
+  padding: 8px 18px;
+  font-size: 0.8rem;
+  color: var(--error);
+}
+
+/* ── Error Message ───────────────────────────────────────────────── */
+.error-message {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 14px 18px;
+  margin: 8px;
+  background: var(--error-glow);
+  border: 1px solid var(--error);
+  border-radius: 10px;
+}
+.error-message .error-icon {
+  flex-shrink: 0;
+  font-size: 1.1rem;
+}
+.error-message p {
+  color: var(--error);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* ── Recent Repos ────────────────────────────────────────────────── */
+.recent-repos {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 6px;
+  right: 6px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: var(--shadow-lg);
+  z-index: 50;
+  overflow: hidden;
+  animation: fadeInUp 0.2s ease;
+}
+
+.recent-label {
+  padding: 10px 14px 6px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+}
+
+.recent-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  text-align: left;
+}
+.recent-item:hover {
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+}
+
+.recent-icon {
+  font-size: 0.9rem;
+  flex-shrink: 0;
+}
+
+.recent-url {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.8rem;
+}
+
+/* ── API Key Hint ────────────────────────────────────────────────── */
+.api-key-hint {
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.hint-icon {
+  font-size: 1rem;
+}
+
+.link-btn {
+  background: none;
+  border: none;
+  color: var(--accent-primary);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.link-btn:hover {
+  color: var(--accent-secondary);
+}
+
+/* ── Responsive ──────────────────────────────────────────────────── */
+@media (max-width: 600px) {
+  .input-group {
+    flex-direction: column;
+  }
+  .repo-url-input {
+    border-radius: 12px;
+    border-right: 1px solid var(--border);
+  }
+  .analyze-btn {
+    border-radius: 12px;
+    margin-top: 8px;
+  }
+}

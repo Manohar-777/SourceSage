@@ -1,0 +1,202 @@
+/* ================================================================
+   App Layout & Core Styles
+   ================================================================ */
+
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-primary);
+  position: relative;
+}
+
+.app-main {
+  flex: 1;
+  padding-bottom: 80px;
+}
+
+/* ── Results Header ─────────────────────────────────────────────── */
+.results-header {
+  padding-top: 32px;
+  padding-bottom: 16px;
+}
+
+.results-header-content {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.results-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.results-title-row h2 {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--gradient-accent);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.results-check {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: var(--success);
+  color: white;
+  border-radius: 50%;
+  font-size: 1rem;
+  -webkit-text-fill-color: white;
+  animation: scaleIn 0.5s ease;
+}
+
+.results-repo {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+/* ── Tab Navigation ─────────────────────────────────────────────── */
+.tab-navigation {
+  display: flex;
+  position: relative;
+  gap: 4px;
+  padding: 6px;
+  margin-top: 16px;
+  margin-bottom: 32px;
+  background: var(--bg-glass);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  max-width: 520px;
+}
+
+.tab-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 20px;
+  background: none;
+  border: none;
+  border-radius: 12px;
+  color: var(--text-muted);
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  font-size: 0.9rem;
+  cursor: pointer;
+  position: relative;
+  z-index: 1;
+  transition: color 0.3s ease;
+  white-space: nowrap;
+}
+
+.tab-btn:hover {
+  color: var(--text-secondary);
+}
+
+.tab-btn.active {
+  color: var(--text-primary);
+}
+
+.tab-icon {
+  font-size: 1rem;
+}
+
+.tab-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 6px;
+  background: var(--accent-primary);
+  color: white;
+  border-radius: 100px;
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+
+.tab-indicator {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  width: calc(33.333% - 4px);
+  height: calc(100% - 12px);
+  background: var(--bg-card);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 0;
+}
+
+/* ── Tab Content ────────────────────────────────────────────────── */
+.tab-content {
+  animation: fadeInUp 0.4s ease;
+}
+
+/* ── Error Banner ───────────────────────────────────────────────── */
+.error-banner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 24px;
+  margin-top: 24px;
+  background: var(--error-glow);
+  border: 1px solid var(--error);
+  border-radius: 12px;
+  color: var(--error);
+}
+
+.error-icon {
+  font-size: 1.25rem;
+}
+
+/* ── Responsive ─────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .results-title-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .tab-navigation {
+    max-width: 100%;
+  }
+
+  .tab-btn {
+    padding: 10px 12px;
+    font-size: 0.8rem;
+    gap: 4px;
+  }
+
+  .tab-icon {
+    font-size: 0.85rem;
+  }
+
+  .tab-count {
+    min-width: 18px;
+    height: 18px;
+    font-size: 0.65rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .tab-btn {
+    padding: 8px;
+    font-size: 0.75rem;
+  }
+
+  .tab-icon {
+    display: none;
+  }
+}
