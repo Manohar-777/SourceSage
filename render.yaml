@@ -10,15 +10,13 @@ services:
         value: 8000
       - key: MODEL_NAME
         value: gemini-2.5-flash
-      # Note: GOOGLE_API_KEY can be added here or entered directly in the frontend UI settings.
 
   # Frontend static site (React + Vite)
-  - type: web
+  - type: static
     name: sourcesage-frontend
-    env: static
     rootDir: frontend
     buildCommand: npm install && npm run build
-    publishDir: dist
+    staticPublishPath: dist
     envVars:
       # Automatically binds the deployed backend's URL to the frontend environment variable at build time
       - key: VITE_API_BASE_URL
