@@ -18,7 +18,7 @@ services:
     env: static
     rootDir: frontend
     buildCommand: npm install && npm run build
-    publishPath: dist
+    publishDir: dist
     envVars:
       # Automatically binds the deployed backend's URL to the frontend environment variable at build time
       - key: VITE_API_BASE_URL
