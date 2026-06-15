@@ -3,6 +3,8 @@
 **SourceSage** is an AI-powered code review and documentation generator that analyzes GitHub repositories using Google Gemini models and streams analysis results to the client in real-time. It showcases modern Generative AI engineering patterns including structured JSON output, tool/function calling, and streaming Server-Sent Events (SSE).
 
 ---
+<img width="1919" height="963" alt="image" src="https://github.com/user-attachments/assets/360063f8-b845-46bd-a499-fe94de79c939" />
+
 
 ## 🚀 Features
 
