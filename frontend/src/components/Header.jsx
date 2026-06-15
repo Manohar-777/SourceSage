@@ -30,11 +30,14 @@ function Header({ apiKey }) {
           <button
             className="theme-toggle"
             onClick={toggleTheme}
-            aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} theme`}
-            title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} theme`}
+            aria-label={`Switch theme (current: ${theme})`}
+            title={`Switch theme (current: ${theme})`}
           >
-            <span className={`theme-icon ${theme === 'dark' ? 'moon' : 'sun'}`}>
-              {theme === 'dark' ? '🌙' : '☀️'}
+            <span className="theme-icon">
+              {theme === 'dark' && '🌙'}
+              {theme === 'light' && '☀️'}
+              {theme === 'cyberpunk' && '👾'}
+              {theme === 'sage' && '🌲'}
             </span>
           </button>
         </div>

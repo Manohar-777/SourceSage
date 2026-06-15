@@ -74,6 +74,76 @@
   --scrollbar-thumb-hover: #94a3b8;
 }
 
+/* ── Theme: Cyberpunk ────────────────────────────────────────────── */
+:root[data-theme='cyberpunk'] {
+  --bg-primary: #0f051d;
+  --bg-secondary: #180930;
+  --bg-tertiary: #2a1152;
+  --bg-card: rgba(42, 17, 82, 0.7);
+  --bg-glass: rgba(15, 5, 29, 0.85);
+  --bg-input: rgba(42, 17, 82, 0.6);
+  --text-primary: #00ffcc;
+  --text-secondary: #e2a0ff;
+  --text-muted: #8b62b1;
+  --accent-primary: #ff007f;
+  --accent-secondary: #00ffff;
+  --accent-glow: rgba(255, 0, 127, 0.35);
+  --success: #39ff14;
+  --success-glow: rgba(57, 255, 20, 0.25);
+  --warning: #ffb700;
+  --warning-glow: rgba(255, 183, 0, 0.25);
+  --error: #ff3333;
+  --error-glow: rgba(255, 51, 51, 0.25);
+  --border: rgba(0, 255, 204, 0.15);
+  --border-hover: rgba(0, 255, 204, 0.3);
+  --shadow: 0 8px 32px rgba(255, 0, 127, 0.2);
+  --shadow-lg: 0 16px 48px rgba(255, 0, 127, 0.3);
+  --shadow-accent: 0 8px 32px rgba(0, 255, 255, 0.25);
+  --glass-blur: blur(20px);
+  --gradient-hero: linear-gradient(135deg, #0f051d 0%, #300c54 50%, #0f051d 100%);
+  --gradient-accent: linear-gradient(135deg, #ff007f, #9b51e0, #00ffff);
+  --gradient-card: linear-gradient(135deg, rgba(255, 0, 127, 0.08), rgba(0, 255, 255, 0.08));
+  --code-bg: #090212;
+  --scrollbar-track: #180930;
+  --scrollbar-thumb: #2a1152;
+  --scrollbar-thumb-hover: #ff007f;
+}
+
+/* ── Theme: Sage (Forest Green) ──────────────────────────────────── */
+:root[data-theme='sage'] {
+  --bg-primary: #0b1611;
+  --bg-secondary: #12241c;
+  --bg-tertiary: #1b352a;
+  --bg-card: rgba(27, 53, 42, 0.7);
+  --bg-glass: rgba(11, 22, 17, 0.85);
+  --bg-input: rgba(27, 53, 42, 0.6);
+  --text-primary: #e6f4ea;
+  --text-secondary: #a3c9b8;
+  --text-muted: #709785;
+  --accent-primary: #34d399;
+  --accent-secondary: #059669;
+  --accent-glow: rgba(52, 211, 153, 0.3);
+  --success: #10b981;
+  --success-glow: rgba(16, 185, 129, 0.25);
+  --warning: #fbbf24;
+  --warning-glow: rgba(251, 191, 36, 0.25);
+  --error: #f87171;
+  --error-glow: rgba(248, 113, 113, 0.25);
+  --border: rgba(163, 201, 184, 0.15);
+  --border-hover: rgba(163, 201, 184, 0.3);
+  --shadow: 0 8px 32px rgba(11, 22, 17, 0.5);
+  --shadow-lg: 0 16px 48px rgba(11, 22, 17, 0.7);
+  --shadow-accent: 0 8px 32px rgba(52, 211, 153, 0.15);
+  --glass-blur: blur(16px);
+  --gradient-hero: linear-gradient(135deg, #0b1611 0%, #173b2c 50%, #0b1611 100%);
+  --gradient-accent: linear-gradient(135deg, #34d399, #10b981, #059669);
+  --gradient-card: linear-gradient(135deg, rgba(52, 211, 153, 0.05), rgba(5, 150, 105, 0.05));
+  --code-bg: #070e0b;
+  --scrollbar-track: #12241c;
+  --scrollbar-thumb: #1b352a;
+  --scrollbar-thumb-hover: #34d399;
+}
+
 /* ── Reset & Base ───────────────────────────────────────────────── */
 *,
 *::before,

@@ -56,9 +56,9 @@ async def _analysis_stream(
 
     try:
         # ── Clone ────────────────────────────────────────────
-        yield _sse("clone_start", {"repo_url": str(request.repo_url)})
+        yield _sse("clone_start", {"repo_url": str(request.repo_url), "branch": request.branch})
 
-        repo_path = await clone_repo(str(request.repo_url))
+        repo_path = await clone_repo(str(request.repo_url), request.branch)
 
         file_tree = await get_file_tree(repo_path)
         filtered = filter_files(file_tree, request.languages)

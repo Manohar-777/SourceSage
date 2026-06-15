@@ -152,6 +152,68 @@ def parse_python_file(code: str) -> dict[str, Any]:
     return result
 
 
+def parse_javascript_file(code: str) -> dict[str, Any]:
+    """Parse a JavaScript/TypeScript source string to extract metadata using heuristics.
+
+    Args:
+        code: Raw JS/TS source code.
+
+    Returns:
+        Dict with keys:
+        - ``functions``: list of function descriptors
+        - ``classes``: list of class descriptors
+        - ``imports``: list of imported module names
+        - ``total_complexity``: aggregate complexity score
+        - ``has_errors``: whether parsing failed
+    """
+    result: dict[str, Any] = {
+        "functions": [],
+        "classes": [],
+        "imports": [],
+        "total_complexity": 1,
+        "has_errors": False,
+    }
+
+    # Regex patterns
+    # 1. Standard function: function name(...) or async function name(...)
+    # 2. Arrow function assignment: const name = (...) => or let name = async(...) =>
+    # 3. Class method: name(...) {
+    func_pattern = re.compile(
+        r'\b(?:function\s+([a-zA-Z0-9_$]+)\s*\()|'
+        r'\b(?:const|let|var)\s+([a-zA-Z0-9_$]+)\s*=\s*(?:async\s*)?\(.*?\)\s*=>|'
+        r'\b([a-zA-Z0-9_$]+)\s*\((?:[^()]*|\([^()]*\))*\)\s*\{',
+        re.MULTILINE
+    )
+
+    class_pattern = re.compile(r'\bclass\s+([a-zA-Z0-9_$]+)', re.MULTILINE)
+    
+    # Import pattern: import ... from ... or require(...)
+    import_pattern = re.compile(r'\bimport\s+.*?\s+from\b|\brequire\s*\(', re.MULTILINE)
+
+    # Find classes
+    for match in class_pattern.finditer(code):
+        result["classes"].append({"name": match.group(1), "has_docstring": False})
+
+    # Find imports
+    for match in import_pattern.finditer(code):
+        result["imports"].append(match.group(0))
+
+    # Find functions and count them
+    for match in func_pattern.finditer(code):
+        func_name = match.group(1) or match.group(2) or match.group(3)
+        if func_name and func_name not in ("if", "for", "while", "switch", "catch"):
+            result["functions"].append({
+                "name": func_name,
+                "complexity": 1,
+            })
+
+    # Complexity estimation: baseline 1 + count of keywords: if, for, while, catch, switch, case, &&, ||, ?
+    complexity_keywords = re.compile(r'\b(if|for|while|catch|switch|case)\b|&&|\|\||\?')
+    result["total_complexity"] = len(complexity_keywords.findall(code)) + 1
+
+    return result
+
+
 # ── Code-smell detection ─────────────────────────────────────
 
 _MAGIC_NUMBER_RE = re.compile(r"(?<!=\s)(?<!\w)\b(?!0\b|1\b|2\b)(\d{2,})\b")
@@ -160,7 +222,7 @@ _MAGIC_NUMBER_RE = re.compile(r"(?<!=\s)(?<!\w)\b(?!0\b|1\b|2\b)(\d{2,})\b")
 def find_code_smells(code: str, language: str) -> list[dict]:
     """Detect common code smells using heuristics.
 
-    Currently supports Python at a deeper level via AST; other
+    Currently supports Python and JS/TS at a deeper level; other
     languages fall back to line-based heuristics.
 
     Args:
@@ -189,7 +251,7 @@ def find_code_smells(code: str, language: str) -> list[dict]:
     # Magic numbers (rough)
     for idx, line in enumerate(lines, start=1):
         stripped = line.strip()
-        if stripped.startswith("#") or stripped.startswith("//"):
+        if stripped.startswith("#") or stripped.startswith("//") or stripped.startswith("/*") or stripped.startswith("*"):
             continue
         matches = _MAGIC_NUMBER_RE.findall(stripped)
         for m in matches:
@@ -259,6 +321,31 @@ def find_code_smells(code: str, language: str) -> list[dict]:
                         }
                     )
 
+    # ── JS/TS-specific smells ────────────────────────────────
+    elif language.lower() in ("javascript", "typescript"):
+        for idx, line in enumerate(lines, start=1):
+            stripped = line.strip()
+            if stripped.startswith("//") or stripped.startswith("/*") or stripped.startswith("*"):
+                continue
+            if "console.log" in line:
+                smells.append(
+                    {
+                        "type": "console_log",
+                        "line": idx,
+                        "description": "Uses 'console.log'. Consider using a proper logging library or deleting it.",
+                        "severity": "info",
+                    }
+                )
+            if re.search(r'\bvar\s+[a-zA-Z0-9_$]+', line):
+                smells.append(
+                    {
+                        "type": "var_usage",
+                        "line": idx,
+                        "description": "Uses 'var' for variable declaration. Use 'let' or 'const' instead.",
+                        "severity": "warning",
+                    }
+                )
+
     return smells
 
 
@@ -299,6 +386,12 @@ def get_file_metrics(code: str, language: str) -> dict[str, Any]:
         metrics["avg_function_length"] = (
             round(sum(lengths) / len(lengths), 1) if lengths else 0.0
         )
+    elif language.lower() in ("javascript", "typescript"):
+        parsed = parse_javascript_file(code)
+        metrics["function_count"] = len(parsed["functions"])
+        metrics["class_count"] = len(parsed["classes"])
+        metrics["import_count"] = len(parsed["imports"])
+        metrics["total_complexity"] = parsed["total_complexity"]
 
     # Code smells (works for all languages)
     metrics["code_smells"] = find_code_smells(code, language)

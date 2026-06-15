@@ -29,6 +29,10 @@ class AnalyzeRequest(BaseModel):
         default="standard",
         description="Review depth: 'quick', 'standard', or 'thorough'.",
     )
+    branch: str | None = Field(
+        default=None,
+        description="Optional Git branch name to clone/analyze.",
+    )
 
 
 class DocGenerationRequest(BaseModel):
@@ -41,6 +45,10 @@ class DocGenerationRequest(BaseModel):
     file_paths: list[str] | None = Field(
         default=None,
         description="Specific file paths to document. If None, all files are documented.",
+    )
+    branch: str | None = Field(
+        default=None,
+        description="Optional Git branch name to clone/analyze.",
     )
 
 

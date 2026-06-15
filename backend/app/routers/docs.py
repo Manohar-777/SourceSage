@@ -55,7 +55,7 @@ async def generate_docs(
 
     try:
         # ── Clone ────────────────────────────────────────────
-        repo_path = await clone_repo(request.repo_url)
+        repo_path = await clone_repo(request.repo_url, request.branch)
         file_tree = await get_file_tree(repo_path)
 
         if not file_tree:

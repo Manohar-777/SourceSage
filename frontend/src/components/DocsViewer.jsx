@@ -25,6 +25,20 @@ function DocsViewer({ docs, onGenerateDocs, repoUrl }) {
     }
   };
 
+  const handleDownload = (text, filename) => {
+    try {
+      const element = document.createElement("a");
+      const file = new Blob([text], { type: 'text/markdown' });
+      element.href = URL.createObjectURL(file);
+      element.download = filename;
+      document.body.appendChild(element);
+      element.click();
+      document.body.removeChild(element);
+    } catch {
+      // fallback
+    }
+  };
+
   if (!docs) {
     return (
       <div className="docs-generate-screen glass-card animate-fade-in">
@@ -123,19 +137,30 @@ function DocsViewer({ docs, onGenerateDocs, repoUrl }) {
           <h4 className="docs-content-title">
             {activeFile === null ? '📋 README.md' : `📄 ${activeFile}`}
           </h4>
-          <button
-            className="docs-copy-btn"
-            onClick={() => handleCopy(
-              activeFile === null ? (docs.readme_content || '') : (currentDoc || ''),
-              activeFile || 'readme'
-            )}
-          >
-            {copied === (activeFile || 'readme') ? (
-              <><span>✓</span> Copied!</>
-            ) : (
-              <><span>📋</span> Copy</>
-            )}
-          </button>
+          <div className="docs-actions">
+            <button
+              className="docs-copy-btn"
+              onClick={() => handleCopy(
+                activeFile === null ? (docs.readme_content || '') : (currentDoc || ''),
+                activeFile || 'readme'
+              )}
+            >
+              {copied === (activeFile || 'readme') ? (
+                <><span>✓</span> Copied!</>
+              ) : (
+                <><span>📋</span> Copy</>
+              )}
+            </button>
+            <button
+              className="docs-copy-btn"
+              onClick={() => handleDownload(
+                activeFile === null ? (docs.readme_content || '') : (currentDoc || ''),
+                activeFile === null ? 'README.md' : `${activeFile.split('/').pop().split('.').shift()}_docs.md`
+              )}
+            >
+              <span>📥</span> Download
+            </button>
+          </div>
         </div>
 
         <div className="docs-content-body">

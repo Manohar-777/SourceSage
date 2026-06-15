@@ -6,7 +6,7 @@ export function ThemeProvider({ children }) {
   const [theme, setThemeState] = useState(() => {
     try {
       const saved = localStorage.getItem('sourcesage-theme');
-      return saved === 'light' || saved === 'dark' ? saved : 'dark';
+      return ['dark', 'light', 'cyberpunk', 'sage'].includes(saved) ? saved : 'dark';
     } catch {
       return 'dark';
     }
@@ -23,16 +23,26 @@ export function ThemeProvider({ children }) {
     // Update meta theme-color
     const metaTheme = document.querySelector('meta[name="theme-color"]');
     if (metaTheme) {
-      metaTheme.setAttribute('content', theme === 'dark' ? '#0a0e1a' : '#f8fafc');
+      const colors = {
+        dark: '#0a0e1a',
+        light: '#f8fafc',
+        cyberpunk: '#0f051d',
+        sage: '#0b1611',
+      };
+      metaTheme.setAttribute('content', colors[theme] || '#0a0e1a');
     }
   }, [theme]);
 
   const toggleTheme = useCallback(() => {
-    setThemeState(prev => (prev === 'dark' ? 'light' : 'dark'));
+    setThemeState(prev => {
+      const list = ['dark', 'light', 'cyberpunk', 'sage'];
+      const nextIdx = (list.indexOf(prev) + 1) % list.length;
+      return list[nextIdx];
+    });
   }, []);
 
   const setTheme = useCallback((newTheme) => {
-    if (newTheme === 'dark' || newTheme === 'light') {
+    if (['dark', 'light', 'cyberpunk', 'sage'].includes(newTheme)) {
       setThemeState(newTheme);
     }
   }, []);

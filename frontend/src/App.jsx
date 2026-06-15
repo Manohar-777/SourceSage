@@ -31,6 +31,7 @@ function AppContent() {
     }
   });
   const [repoUrl, setRepoUrl] = useState('');
+  const [branchName, setBranchName] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
   // Persist API key
@@ -58,7 +59,7 @@ function AppContent() {
     }
   }, []);
 
-  const handleAnalyze = useCallback(async (url) => {
+  const handleAnalyze = useCallback(async (url, branch = null) => {
     if (!url) return;
     if (!apiKey) {
       setErrorMessage('Please set your Gemini API key first (click the ⚙️ button).');
@@ -66,6 +67,7 @@ function AppContent() {
     }
 
     setRepoUrl(url);
+    setBranchName(branch || '');
     setErrorMessage('');
     setAnalysisState(ANALYSIS_STATES.CLONING);
     setAnalysisData({
@@ -81,7 +83,7 @@ function AppContent() {
 
     let fileIndex = 0;
 
-    await analyzeRepo(url, apiKey, (event) => {
+    await analyzeRepo(url, branch, apiKey, (event) => {
       switch (event.type) {
         // ── Backend SSE event: clone_start ──
         case 'clone_start':
@@ -213,13 +215,13 @@ function AppContent() {
   const handleGenerateDocs = useCallback(async () => {
     if (!repoUrl || !apiKey) return;
     try {
-      const docs = await generateDocs(repoUrl, apiKey);
+      const docs = await generateDocs(repoUrl, branchName || null, apiKey);
       setAnalysisData(prev => ({ ...prev, docs }));
       setActiveTab('docs');
     } catch (error) {
       setErrorMessage(error.message);
     }
-  }, [repoUrl, apiKey]);
+  }, [repoUrl, branchName, apiKey]);
 
   const handleReset = useCallback(() => {
     setAnalysisState(ANALYSIS_STATES.IDLE);

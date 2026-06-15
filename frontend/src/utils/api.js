@@ -12,7 +12,7 @@ export const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8
  * @param {function} onEvent - Callback for each SSE event: { type, data }
  * @returns {Promise<void>}
  */
-export async function analyzeRepo(repoUrl, apiKey, onEvent) {
+export async function analyzeRepo(repoUrl, branch, apiKey, onEvent) {
   try {
     const response = await fetch(`${API_BASE}/api/analyze`, {
       method: 'POST',
@@ -22,6 +22,7 @@ export async function analyzeRepo(repoUrl, apiKey, onEvent) {
       },
       body: JSON.stringify({
         repo_url: repoUrl,
+        branch: branch || null,
       }),
     });
 
@@ -97,7 +98,7 @@ export async function analyzeRepo(repoUrl, apiKey, onEvent) {
  * @param {string} apiKey
  * @returns {Promise<object>}
  */
-export async function generateDocs(repoUrl, apiKey) {
+export async function generateDocs(repoUrl, branch, apiKey) {
   try {
     const response = await fetch(`${API_BASE}/api/generate-docs`, {
       method: 'POST',
@@ -107,6 +108,7 @@ export async function generateDocs(repoUrl, apiKey) {
       },
       body: JSON.stringify({
         repo_url: repoUrl,
+        branch: branch || null,
       }),
     });
 

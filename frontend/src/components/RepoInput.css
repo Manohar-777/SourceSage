@@ -144,6 +144,20 @@
   box-shadow: 0 0 0 3px var(--error-glow);
 }
 
+.repo-branch-input {
+  max-width: 160px;
+  border-radius: 0;
+  border-left: 1px solid var(--border);
+  border-right: none;
+  font-size: 0.9rem;
+  padding-left: 14px;
+  background: var(--bg-input);
+}
+.repo-branch-input:focus {
+  border-left-color: var(--accent-primary);
+  border-right: none;
+}
+
 .analyze-btn {
   border-radius: 0 12px 12px 0;
   padding: 14px 28px;

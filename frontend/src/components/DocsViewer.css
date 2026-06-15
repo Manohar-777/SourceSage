@@ -204,6 +204,11 @@
 }
 .docs-copy-btn:hover { color: var(--text-primary); border-color: var(--accent-primary); }
 
+.docs-actions {
+  display: flex;
+  gap: 8px;
+}
+
 .docs-content-body {
   flex: 1;
   overflow-y: auto;

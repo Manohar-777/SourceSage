@@ -365,23 +365,15 @@ class GeminiService:
         contents: Any,
         config: types.GenerateContentConfig | None = None,
     ) -> Any:
-        """Wrapper around the synchronous Gemini client to run in async.
+        """Wrapper around the asynchronous Gemini client.
 
-        The ``google-genai`` SDK's ``generate_content`` is synchronous,
-        so we use ``asyncio`` to avoid blocking the event loop.
+        Uses the native ``client.aio`` interface from the ``google-genai`` SDK.
         """
-        import asyncio
-
-        loop = asyncio.get_running_loop()
-
-        def _call():
-            return self._client.models.generate_content(
-                model=self._model,
-                contents=contents,
-                config=config,
-            )
-
-        return await loop.run_in_executor(None, _call)
+        return await self._client.aio.models.generate_content(
+            model=self._model,
+            contents=contents,
+            config=config,
+        )
 
     @staticmethod
     def _build_analysis_prompt(
@@ -420,33 +412,96 @@ class GeminiService:
     def _execute_tool(name: str, args: dict[str, Any]) -> dict[str, Any]:
         """Execute a tool call locally and return the result.
 
-        In a production system each tool would perform real analysis.
-        Here we return the arguments enriched with a marker so the
-        model can incorporate the information.
+        Performs real, lightweight code analysis and structural checks.
         """
         result: dict[str, Any] = {"tool": name, "status": "executed"}
 
         if name == "analyze_code_quality":
-            result["analysis"] = (
-                f"Code quality analysis performed on {args.get('file_path', 'unknown')}. "
-                f"Language: {args.get('language', 'unknown')}. "
-                f"Code length: {len(args.get('code', ''))} characters."
-            )
+            code = args.get("code", "")
+            lines = code.splitlines()
+            issues_found = []
+            
+            # Simple heuristic checks
+            for idx, line in enumerate(lines, start=1):
+                if len(line) > 120:
+                    issues_found.append(f"Line {idx} exceeds 120 characters ({len(line)} chars).")
+                if "TODO" in line or "FIXME" in line:
+                    issues_found.append(f"Line {idx} contains developer comment placeholder (TODO/FIXME).")
+            
+            result["analysis"] = {
+                "file_path": args.get("file_path", "unknown"),
+                "language": args.get("language", "unknown"),
+                "line_count": len(lines),
+                "issues_detected": issues_found or ["No simple code smells detected."],
+                "has_docstrings": '"""' in code or "'''" in code or "/**" in code or "/*" in code,
+            }
         elif name == "detect_security_vulnerability":
-            result["analysis"] = (
-                f"Security scan completed for {args.get('language', 'unknown')} code. "
-                f"Checked for OWASP Top-10 vulnerabilities."
-            )
+            code = args.get("code", "")
+            vulns = []
+            
+            # Heuristic regex patterns for common security vulnerabilities
+            patterns = {
+                "hardcoded_secret": r"(?i)(password|secret|passwd|api_key|apikey|private_key|token)\s*=\s*['\"][a-zA-Z0-9_\-\+]{10,}['\"]",
+                "unsafe_execution": r"\b(eval|exec|subprocess\.Popen\(.*?shell\s*=\s*True|child_process\.exec)\b",
+                "sql_injection": r"(?i)(SELECT|INSERT|UPDATE|DELETE).*?\+.*?\b",
+                "insecure_deserialization": r"\b(pickle\.loads|yaml\.load)\b",
+            }
+            
+            import re
+            for key, pattern in patterns.items():
+                for match in re.finditer(pattern, code):
+                    line_num = code[:match.start()].count("\n") + 1
+                    vulns.append({
+                        "type": key,
+                        "line": line_num,
+                        "match": match.group(0)[:50],
+                        "description": f"Potential {key.replace('_', ' ')} vulnerability detected."
+                    })
+                    
+            result["analysis"] = {
+                "vulnerabilities_found": vulns,
+                "scan_status": "Success",
+                "rules_scanned": list(patterns.keys())
+            }
         elif name == "generate_docstring":
-            result["docstring"] = (
-                f"Generated docstring for {args.get('element_type', 'element')} "
-                f"in {args.get('language', 'unknown')}."
-            )
+            code = args.get("code", "")
+            el_type = args.get("element_type", "function")
+            import re
+            
+            # Extract name and params
+            name_match = re.search(r'\b(def|class|function)\s+([a-zA-Z0-9_$]+)', code)
+            name = name_match.group(2) if name_match else "element"
+            
+            params = []
+            if el_type == "function":
+                param_match = re.search(r'\((.*?)\)', code)
+                if param_match:
+                    params = [p.strip().split(':')[0].split('=')[0].strip() for p in param_match.group(1).split(',') if p.strip()]
+            
+            # Build standard docstring template
+            if el_type == "class":
+                docstring = f'"""Class {name}.\n\nDetailed class description goes here.\n"""'
+            elif el_type == "module":
+                docstring = f'"""Module {name}.\n\nModule level documentation goes here.\n"""'
+            else:
+                param_section = "\n    Args:\n" + "\n".join(f"        {p}: Description of {p}." for p in params) if params else ""
+                docstring = f'"""Function {name}.\n\nDetailed function description goes here.{param_section}\n\n    Returns:\n        Description of return value.\n    """'
+                
+            result["docstring"] = docstring
         elif name == "suggest_refactoring":
-            result["suggestions"] = (
-                f"Refactoring suggestions generated. "
-                f"Complexity score: {args.get('complexity_score', 0)}."
-            )
+            code = args.get("code", "")
+            complexity = args.get("complexity_score", 1)
+            suggestions = []
+            
+            lines = code.splitlines()
+            if len(lines) > 50:
+                suggestions.append("Break the block into smaller functions to improve readability.")
+            if complexity > 5:
+                suggestions.append("Simplify control flow (e.g. reduce nested if/for/while blocks).")
+            if any(line.startswith(" " * 16) for line in lines):
+                suggestions.append("Deep indentation levels detected. Extract nested logic into separate helper methods.")
+                
+            result["suggestions"] = suggestions or ["Structure is clean. Standard formatting applied."]
         else:
             result["error"] = f"Unknown tool: {name}"
 

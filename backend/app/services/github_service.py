@@ -45,7 +45,7 @@ def detect_language(file_path: str) -> str:
     return SUPPORTED_EXTENSIONS.get(suffix, "unknown")
 
 
-async def clone_repo(repo_url: str) -> Path:
+async def clone_repo(repo_url: str, branch: str | None = None) -> Path:
     """Clone a GitHub repository (shallow, depth=1) into a temp directory.
 
     The clone runs in a thread executor so it never blocks the
@@ -53,6 +53,7 @@ async def clone_repo(repo_url: str) -> Path:
 
     Args:
         repo_url: HTTPS URL of the repository.
+        branch: Optional Git branch name to clone.
 
     Returns:
         Path to the cloned repository root.
@@ -63,17 +64,23 @@ async def clone_repo(repo_url: str) -> Path:
     repo_dir = settings.temp_path / f"repo_{uuid.uuid4().hex[:12]}"
     repo_dir.mkdir(parents=True, exist_ok=True)
 
-    logger.info("Cloning %s → %s (depth=1)", repo_url, repo_dir)
+    logger.info("Cloning %s (%s) → %s (depth=1)", repo_url, branch or "default", repo_dir)
 
     try:
         loop = asyncio.get_running_loop()
+        clone_kwargs = {
+            "depth": 1,
+            "single_branch": True,
+        }
+        if branch:
+            clone_kwargs["branch"] = branch
+
         await loop.run_in_executor(
             None,
             lambda: Repo.clone_from(
                 str(repo_url),
                 str(repo_dir),
-                depth=1,
-                single_branch=True,
+                **clone_kwargs
             ),
         )
     except Exception as exc:

@@ -6,6 +6,7 @@ function RepoInput({ onAnalyze, isLoading, errorMessage, apiKey, onApiKeyChange 
   const [showSettings, setShowSettings] = useState(false);
   const [recentRepos, setRecentRepos] = useState([]);
   const [showRecent, setShowRecent] = useState(false);
+  const [branch, setBranch] = useState('');
 
   useEffect(() => {
     try {
@@ -19,7 +20,7 @@ function RepoInput({ onAnalyze, isLoading, errorMessage, apiKey, onApiKeyChange 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (url.trim()) {
-      onAnalyze(url.trim());
+      onAnalyze(url.trim(), branch.trim() || null);
     }
   };
 
@@ -101,6 +102,16 @@ function RepoInput({ onAnalyze, isLoading, errorMessage, apiKey, onApiKeyChange 
               id="repo-url-input"
             />
           </div>
+
+          <input
+            type="text"
+            className="input repo-branch-input"
+            placeholder="branch (optional)"
+            value={branch}
+            onChange={(e) => setBranch(e.target.value)}
+            disabled={isLoading}
+            autoComplete="off"
+          />
 
           <button
             type="submit"
